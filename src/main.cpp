@@ -8,6 +8,9 @@
 
 
 #include "People.h"
+#include "Students.h"
+#include "Supervisors.h"
+#include "ProjResp.h"
 #include "Graph.h"
 #include <iostream>
 
@@ -16,17 +19,14 @@ int main(){
 
 	//set Projects
 
-	People p1= new People(1,"Proj1");
-	People p2= new People(2,"Proj2");
-
+	ProjResp* pr1= new ProjResp(1,"Joao Tiras","super acucar");
 	//setSupervisors
 
-	People s1= new People(1,"Sup1");
-	People s2= new People(2,"Sup2");
+	Students* st1= new Students(1,"Pedro");
 
 	//set to vertex and edges
 
-
+	Supervisors* sp1 = new Supervisors(1,"Rui",2);
 
 
 

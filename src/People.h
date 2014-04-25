@@ -15,6 +15,7 @@ protected:
 	int id;
 
 public:
+	People();
 	People(int id,string name);
 	virtual ~People();
 };

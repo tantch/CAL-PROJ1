@@ -7,8 +7,9 @@
 
 #include "Students.h"
 
-Students::Students() {
-	// TODO Auto-generated constructor stub
+Students::Students(int id,string name) {
+	this->id=id;
+	this->name=name;
 
 }
 

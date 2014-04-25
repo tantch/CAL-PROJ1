@@ -10,7 +10,7 @@
 
 #include "People.h"
 
-namespace std {
+
 
 class ProjResp: public People {
 	string projName;
@@ -19,6 +19,5 @@ public:
 	virtual ~ProjResp();
 };
 
-} /* namespace std */
 
 #endif /* PROJRESP_H_ */

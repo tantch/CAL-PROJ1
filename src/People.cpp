@@ -12,6 +12,10 @@ People::People(int id,string name) {
 	this->name=name;
 
 }
+People::People(){
+	this->id = 0;
+	this->name= ",";
+}
 
 People::~People() {
 	// TODO Auto-generated destructor stub
