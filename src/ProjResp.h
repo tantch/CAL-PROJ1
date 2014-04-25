@@ -13,8 +13,9 @@
 namespace std {
 
 class ProjResp: public People {
+	string projName;
 public:
-	ProjResp();
+	ProjResp(int id, string name,string projName);
 	virtual ~ProjResp();
 };
 

@@ -7,10 +7,13 @@
 
 #include "ProjResp.h"
 
-namespace std {
 
-ProjResp::ProjResp() {
-	// TODO Auto-generated constructor stub
+
+
+ProjResp::ProjResp(int id, string name,string projName){
+	this->id=id;
+	this->name=name;
+	this->projName=projName;
 
 }
 
@@ -18,4 +21,4 @@ ProjResp::~ProjResp() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace std */
+
