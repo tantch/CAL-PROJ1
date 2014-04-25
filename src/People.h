@@ -10,7 +10,7 @@
 #include <string>
 using namespace std;
 class People {
-
+protected:
 	string name;
 	int id;
 
