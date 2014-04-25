@@ -6,8 +6,7 @@
  */
 
 
-#include "Edge.h"
-#include "Vertex.h"
+
 #include "People.h"
 #include "Graph.h"
 #include <iostream>

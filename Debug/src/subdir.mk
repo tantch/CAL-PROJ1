@@ -4,24 +4,24 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/Edge.cpp \
-../src/Graph.cpp \
 ../src/People.cpp \
-../src/Vertex.cpp \
+../src/ProjResp.cpp \
+../src/Students.cpp \
+../src/Supervisors.cpp \
 ../src/main.cpp 
 
 OBJS += \
-./src/Edge.o \
-./src/Graph.o \
 ./src/People.o \
-./src/Vertex.o \
+./src/ProjResp.o \
+./src/Students.o \
+./src/Supervisors.o \
 ./src/main.o 
 
 CPP_DEPS += \
-./src/Edge.d \
-./src/Graph.d \
 ./src/People.d \
-./src/Vertex.d \
+./src/ProjResp.d \
+./src/Students.d \
+./src/Supervisors.d \
 ./src/main.d 
 
 
