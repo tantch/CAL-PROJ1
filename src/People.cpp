@@ -7,19 +7,26 @@
 
 #include "People.h"
 
-People::People(int id,string name,vector<int> prefOrder,vector<int> prefPrio) {
-	this->id=id;
-	this->name=name;
-	this->prefOrder=prefOrder;
-	this->prefPrio=prefPrio;
+People::People(int id, string name, vector<int> prefOrder,
+		vector<int> prefPrio) {
+	this->id = id;
+	this->name = name;
+	this->prefOrder = prefOrder;
+	this->prefPrio = prefPrio;
 
 }
-People::People(){
+People::People() {
 	this->id = 0;
-	this->name= ",";
+	this->name = ",";
 }
 
 People::~People() {
 	// TODO Auto-generated destructor stub
 }
 
+bool People::operator==(const People & p) {
+	if (id == p.id)
+		return true;
+	else
+		return false;
+}

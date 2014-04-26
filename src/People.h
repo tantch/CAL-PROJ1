@@ -20,6 +20,20 @@ public:
 	People();
 	People(int id,string name,vector<int> prefOrder,vector<int> prefPrio);
 	virtual ~People();
+	string getName(){
+		return name;
+	}
+	int getId(){
+		return id;
+	}
+	vector<int> getPrefOrder(){
+		return prefOrder;
+	}
+	vector<int> getPrefPrio(){
+		return prefPrio;
+	}
+
+	bool operator==(const People & p);
 };
 
 

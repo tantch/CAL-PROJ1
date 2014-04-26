@@ -11,10 +11,65 @@
 #include "ProjResp.h"
 #include "Graph.h"
 #include <iostream>
+#include <vector>
+
+vector<Students *> students;
+vector<ProjResp *> projects;
+vector<Supervisors *> supervisors;
+Graph<People>* stableGraph;
+
+void setGraph() {
+	stableGraph = new Graph<People>();
+	stableGraph->setProjectsN(projects.size());
+	stableGraph->setStudentsN(students.size());
+	stableGraph->setSupervisorsN(supervisors.size());
+
+	for (int i = 0; i++; i < students.size()) {
+		stableGraph->addVertex(*students[i]);
+
+	}
+	for (int i = 0; i++; i < projects.size()) {
+		stableGraph->addVertex(*projects[i]);
+	}
+	for (int i = 0; i++; i < supervisors.size()) {
+		stableGraph->addVertex(*supervisors[i]);
+	}
+
+	for (int i = 0; i++; i < students.size()) {
+		vector<int> temp1 = students[i]->getPrefOrder();
+		vector<int> temp2 = students[i]->getPrefPrio();
+		//vector<Vertex<People> *> temp3 = stableGraph->getVertexSet();
+		for (int j = 0; j < temp1.size(); j++) {
+			stableGraph->addEdge(*students[i], *projects[temp1[j] - 1],
+					temp2[j] - 1);
+			//stableGraph->addEdge(temp3[i],temp3[i+students.size()],temp2[j]-1);
+		}
+	}
+	for (int i = 0; i++; i < projects.size()) {
+		vector<int> temp1 = projects[i]->getPrefOrder();
+		vector<int> temp2 = projects[i]->getPrefPrio();
+
+		for (int j = 0; j < temp1.size(); j++) {
+			stableGraph->addEdge(*projects[i], *students[temp1[j] - 1],
+					temp2[j] - 1);
+		}
+	}
+	for (int i = 0; i++; i < supervisors.size()) {
+		vector<int> temp1 = supervisors[i]->getPrefOrder();
+		vector<int> temp2 = supervisors[i]->getPrefPrio();
+
+		for (int j = 0; j < temp1.size(); j++) {
+			stableGraph->addEdge(*supervisors[i], *projects[temp1[j] - 1],
+					temp2[j] - 1);
+		}
+	}
+
+}
+
 
 int main() {
 
-	//create students
+//create students
 
 	vector<int>* tempPrio = new vector<int>();
 	vector<int>* tempOrder = new vector<int>();
@@ -58,7 +113,7 @@ int main() {
 	tempPrio->push_back(1);
 	Students* e4 = new Students(4, "E4", *tempOrder, *tempPrio);
 
-	//set Projects
+//set Projects
 	tempPrio->clear();
 	tempOrder->clear();
 	tempOrder->push_back(1);
@@ -67,13 +122,13 @@ int main() {
 	tempPrio->push_back(1);
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
-	ProjResp* p1 = new ProjResp(1, "PR1", "P1", *tempOrder, *tempPrio);
+	ProjResp* p1 = new ProjResp(5, "PR1", "P1", *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
 	tempOrder->push_back(1);
 	tempPrio->push_back(1);
-	ProjResp* p2 = new ProjResp(2, "PR2", "P2", *tempOrder, *tempPrio);
+	ProjResp* p2 = new ProjResp(6, "PR2", "P2", *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -83,7 +138,7 @@ int main() {
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
 	tempPrio->push_back(1);
-	ProjResp* p3 = new ProjResp(3, "PR3", "P3", *tempOrder, *tempPrio);
+	ProjResp* p3 = new ProjResp(7, "PR3", "P3", *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -93,7 +148,7 @@ int main() {
 	tempPrio->push_back(1);
 	tempPrio->push_back(3);
 	tempPrio->push_back(2);
-	ProjResp* p4 = new ProjResp(4, "PR4", "P4", *tempOrder, *tempPrio);
+	ProjResp* p4 = new ProjResp(8, "PR4", "P4", *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -101,8 +156,8 @@ int main() {
 	tempOrder->push_back(4);
 	tempPrio->push_back(1);
 	tempPrio->push_back(2);
-	ProjResp* p5 = new ProjResp(5, "PR5", "P5", *tempOrder, *tempPrio);
-	//setSupervisors
+	ProjResp* p5 = new ProjResp(9, "PR5", "P5", *tempOrder, *tempPrio);
+//setSupervisors
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -112,7 +167,7 @@ int main() {
 	tempPrio->push_back(1);
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
-	Supervisors* s1 = new Supervisors(1, "S1", 2, *tempOrder, *tempPrio);
+	Supervisors* s1 = new Supervisors(10, "S1", 2, *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -122,7 +177,7 @@ int main() {
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
 	tempPrio->push_back(1);
-	Supervisors* s2 = new Supervisors(2, "S2", 1, *tempOrder, *tempPrio);
+	Supervisors* s2 = new Supervisors(11, "S2", 1, *tempOrder, *tempPrio);
 
 	tempPrio->clear();
 	tempOrder->clear();
@@ -132,12 +187,33 @@ int main() {
 	tempPrio->push_back(3);
 	tempPrio->push_back(2);
 	tempPrio->push_back(1);
-	Supervisors* s3 = new Supervisors(3, "S3", 2, *tempOrder, *tempPrio);
+	Supervisors* s3 = new Supervisors(12, "S3", 2, *tempOrder, *tempPrio);
 
-	//set to vertex and edges
+//add to vectos
 
-	Graph<People> hungGraph();
+	students.push_back(e1);
+	students.push_back(e2);
+	students.push_back(e3);
+	students.push_back(e4);
 
+	projects.push_back(p1);
+	projects.push_back(p2);
+	projects.push_back(p3);
+	projects.push_back(p4);
+	projects.push_back(p5);
 
+	supervisors.push_back(s1);
+	supervisors.push_back(s2);
+	supervisors.push_back(s3);
+//set to vertex and edges using the 3 global vectors
+
+	setGraph();
+	//@TODO Print the graph to check data input
+
+	//@TODO apply Hung Alg
+	/**
+	 * @TODO print final graph
+	 */
 	return 0;
 }
+
