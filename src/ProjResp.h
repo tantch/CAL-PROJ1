@@ -10,14 +10,12 @@
 
 #include "People.h"
 
-
-
 class ProjResp: public People {
 	string projName;
 public:
-	ProjResp(int id, string name,string projName);
+	ProjResp(int id, string name, string projName, vector<int> prefOrder,
+			vector<int> prefPrio);
 	virtual ~ProjResp();
 };
-
 
 #endif /* PROJRESP_H_ */

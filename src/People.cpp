@@ -7,9 +7,11 @@
 
 #include "People.h"
 
-People::People(int id,string name) {
+People::People(int id,string name,vector<int> prefOrder,vector<int> prefPrio) {
 	this->id=id;
 	this->name=name;
+	this->prefOrder=prefOrder;
+	this->prefPrio=prefPrio;
 
 }
 People::People(){

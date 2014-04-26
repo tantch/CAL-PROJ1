@@ -17,7 +17,7 @@ class Supervisors: public People {
 
 
 public:
-	Supervisors(int id, string name, int numMax);
+	Supervisors(int id, string name, int numMax,vector<int> prefOrder,vector<int> prefPrio);
 	virtual ~Supervisors();
 };
 

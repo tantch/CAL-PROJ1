@@ -12,7 +12,7 @@
 
 class Students: public People {
 public:
-	Students(int id,string name);
+	Students(int id,string name,vector<int> prefOrder,vector<int> prefPrio);
 	virtual ~Students();
 };
 

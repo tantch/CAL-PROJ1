@@ -7,9 +7,12 @@
 
 #include "Students.h"
 
-Students::Students(int id,string name) {
-	this->id=id;
-	this->name=name;
+Students::Students(int id, string name, vector<int> prefOrder,
+		vector<int> prefPrio) {
+	this->id = id;
+	this->name = name;
+	this->prefOrder = prefOrder;
+	this->prefPrio = prefPrio;
 
 }
 
