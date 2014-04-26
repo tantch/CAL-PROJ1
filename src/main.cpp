@@ -209,7 +209,7 @@ int main() {
 
 	setGraph();
 	//@TODO Print the graph to check data input
-
+	stableGraph->applyStableMarriage();
 	//@TODO apply Hung Alg
 	/**
 	 * @TODO print final graph

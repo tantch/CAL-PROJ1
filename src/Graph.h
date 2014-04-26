@@ -241,7 +241,7 @@ void Graph<T>::applyStableMarriage() {
 		int min = -1;
 		int edj;
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
-			if ((min == -1 || vertexSet[i]->adj[j]->weight < min)
+			if ((min == -1 || vertexSet[i]->adj[j].weight < min)
 					&& !vertexSet[i]->adj[j].rejected) {
 				edj = j;
 			}
@@ -253,7 +253,7 @@ void Graph<T>::applyStableMarriage() {
 			vertexSet[i]->adj[edj].rejected = true;
 			Vertex<T> * de = vertexSet[i]->adj[edj].dest;
 			for (int c = 0; c < de->adj.size(); c++) {
-				if (de->adj[c].des.info == vertexSet[i]->info) {
+				if (de->adj[c].dest->info == vertexSet[i]->info) {
 					de->adj[c].proposed = true;
 				}
 			}
@@ -268,7 +268,7 @@ void Graph<T>::applyStableMarriage() {
 					&& !vertexSet[i]->adj[j].rejected) {
 				vertexSet[i]->adj[j].rejected = true;
 
-				if (min == -1 || vertexSet[i]->adj[j]->weight < min) {
+				if (min == -1 || vertexSet[i]->adj[j].weight < min) {
 					edj = j;
 				}
 			}
@@ -277,7 +277,7 @@ void Graph<T>::applyStableMarriage() {
 			vertexSet[i]->adj[edj].rejected = false;
 			Vertex<T> * de = vertexSet[i]->adj[edj].dest;
 			for (int c = 0; c < de->adj.size(); c++) {
-				if (de->adj[c].des.info == vertexSet[i]->info) {
+				if (de->adj[c].dest->info == vertexSet[i]->info) {
 					de->adj[c].rejected = false;
 				}
 			}
