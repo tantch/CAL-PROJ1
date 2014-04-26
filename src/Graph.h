@@ -8,6 +8,7 @@
 #include <queue>
 #include <list>
 #include <limits>
+#include <iostream>
 using namespace std;
 
 template<class T> class Edge;
@@ -121,6 +122,7 @@ public:
 	void setSupervisorsN(int n);
 	//Exercicio 5
 	Vertex<T>* getVertex(const T &v) const;
+	void printGraph();
 
 };
 
@@ -135,10 +137,12 @@ bool Graph<T>::addVertex(const T &in) {
 	vertexSet.push_back(v1);
 	return true;
 }
+
 template<class T>
 void Graph<T>::setStudentsN(int n) {
 	studentsN = n;
 }
+
 template<class T>
 void Graph<T>::setProjectsN(int n) {
 	projectsN = n;
@@ -289,5 +293,19 @@ void Graph<T>::applyStableMarriage() {
 	applyStableMarriage();
 
 }
+
+template<class T>
+void Graph<T>::printGraph(){
+
+	typename vector<Vertex<T>* >::iterator it=vertexSet.begin();
+
+	while(it!=vertexSet.end()){
+		cout << "\n Info: ";
+		cout << (*it)->getInfo().print();
+		it++;
+
+	}
+}
+
 
 #endif /* GRAPH_H_ */

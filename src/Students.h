@@ -14,6 +14,12 @@ class Students: public People {
 public:
 	Students(int id,string name,vector<int> prefOrder,vector<int> prefPrio);
 	virtual ~Students();
+	string print(){
+		string str = "Student: " + getName();
+		return str;
+
+		}
+
 };
 
 #endif /* STUDENTS_H_ */

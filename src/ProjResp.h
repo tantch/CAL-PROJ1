@@ -16,6 +16,12 @@ public:
 	ProjResp(int id, string name, string projName, vector<int> prefOrder,
 			vector<int> prefPrio);
 	virtual ~ProjResp();
+
+	string print(){
+		string str = "Project: " + getName();
+		return str;
+
+			}
 };
 
 #endif /* PROJRESP_H_ */

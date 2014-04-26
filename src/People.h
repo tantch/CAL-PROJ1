@@ -33,6 +33,8 @@ public:
 		return prefPrio;
 	}
 
+	string print(){	}
+
 	bool operator==(const People & p);
 };
 

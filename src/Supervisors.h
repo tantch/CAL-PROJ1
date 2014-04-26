@@ -10,6 +10,7 @@
 
 #include "People.h"
 
+
 namespace std {
 
 class Supervisors: public People {
@@ -19,6 +20,12 @@ class Supervisors: public People {
 public:
 	Supervisors(int id, string name, int numMax,vector<int> prefOrder,vector<int> prefPrio);
 	virtual ~Supervisors();
+
+	string print(){
+				string str = "Supervisor: " + getName();
+				return str;
+
+			}
 };
 
 } /* namespace std */

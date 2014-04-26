@@ -208,9 +208,15 @@ int main() {
 //set to vertex and edges using the 3 global vectors
 
 	setGraph();
+
+	stableGraph->printGraph();
+
 	cout<<"aplciar sabelmarriage";
 	//@TODO Print the graph to check data input
-	stableGraph->applyStableMarriage();
+
+	//stableGraph->applyStableMarriage();
+
+
 	//@TODO apply Hung Alg
 	/**
 	 * @TODO print final graph
