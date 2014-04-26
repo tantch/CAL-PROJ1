@@ -70,7 +70,7 @@ void setGraph() {
 int main() {
 
 //create students
-
+	cout<<"cenas\n";
 	vector<int>* tempPrio = new vector<int>();
 	vector<int>* tempOrder = new vector<int>();
 	tempOrder->push_back(1);
@@ -208,6 +208,7 @@ int main() {
 //set to vertex and edges using the 3 global vectors
 
 	setGraph();
+	cout<<"aplciar sabelmarriage";
 	//@TODO Print the graph to check data input
 	stableGraph->applyStableMarriage();
 	//@TODO apply Hung Alg
