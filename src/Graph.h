@@ -36,7 +36,7 @@ class Vertex {
 public:
 	Vertex(T in);
 	friend class Graph<T> ;
-
+	vector<Edge<T> > getAdj(){return adj;}
 	T getInfo() const;
 	int getIndegree() const;
 
@@ -95,6 +95,10 @@ public:
 	Edge(Vertex<T> *d, double w);
 	friend class Graph<T> ;
 	friend class Vertex<T> ;
+
+	bool getProp(){return proposed;}
+	bool getRej(){return rejected;}
+	Vertex<T> * getDest(){return dest;}
 };
 
 template<class T>
@@ -300,13 +304,26 @@ void Graph<T>::applyStableMarriage() {
 template<class T>
 void Graph<T>::printGraph() {
 
+	string main, dest;
 
 	cout << "size " << vertexSet.size();
 	for(int i=0;i<vertexSet.size();i++){
 		cout << "\n Info: ";
-		string str= vertexSet[i]->info.print();
-		cout << str<<endl;
+		main= vertexSet[i]->info.print();
+		cout << main <<endl;
+		for(int i =0;i<vertexSet[i]->getAdj().size();i++){
+			dest = vertexSet[i]->getAdj()[i].getDest()->info.print();
+			cout << "Connected to ";
+			cout << dest;
+			if (vertexSet[i]->getAdj()[i].getProp()==false)
+				cout << " with Proposed=false";
+			else cout << " with Proposed=true";
 
+			if (vertexSet[i]->getAdj()[i].getRej()==false)
+				cout << " with Rejected=false\n";
+			else cout << " with Rejected=true\n";
+
+		}
 
 
 	}
