@@ -36,7 +36,9 @@ class Vertex {
 public:
 	Vertex(T in);
 	friend class Graph<T> ;
-	vector<Edge<T> > getAdj(){return adj;}
+	vector<Edge<T> > getAdj() {
+		return adj;
+	}
 	T getInfo() const;
 	int getIndegree() const;
 
@@ -96,9 +98,15 @@ public:
 	friend class Graph<T> ;
 	friend class Vertex<T> ;
 
-	bool getProp(){return proposed;}
-	bool getRej(){return rejected;}
-	Vertex<T> * getDest(){return dest;}
+	bool getProp() {
+		return proposed;
+	}
+	bool getRej() {
+		return rejected;
+	}
+	Vertex<T> * getDest() {
+		return dest;
+	}
 };
 
 template<class T>
@@ -125,6 +133,7 @@ public:
 	void setProjectsN(int n);
 	void printGraph();
 	void setSupervisorsN(int n);
+	bool studentsLinked();
 	//Exercicio 5
 	Vertex<T>* getVertex(const T &v) const;
 
@@ -247,7 +256,7 @@ Vertex<T>* Graph<T>::getVertex(const T &v) const {
 
 template<class T>
 void Graph<T>::applyStableMarriage() {
-	cout<<"qetal\n";
+
 	//percorrer estudantes
 	for (int i = 0; i < studentsN; i++) {
 		int min = -1;
@@ -255,6 +264,7 @@ void Graph<T>::applyStableMarriage() {
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
 			if ((min == -1 || vertexSet[i]->adj[j].weight < min)
 					&& !vertexSet[i]->adj[j].rejected) {
+				min=vertexSet[i]->adj[j].weight;
 				edj = j;
 			}
 
@@ -272,24 +282,30 @@ void Graph<T>::applyStableMarriage() {
 		}
 	}
 
-	for (int i = studentsN; i < projectsN; i++) {
+
+	for (int i = studentsN; i < studentsN+projectsN; i++) {
 		int min = -1;
 		int edj;
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+			cout<<"testing conection of edge to: "<<vertexSet[i]->adj[j].dest->info.print()<<endl;
 			if (vertexSet[i]->adj[j].proposed
 					&& !vertexSet[i]->adj[j].rejected) {
 				vertexSet[i]->adj[j].rejected = true;
 
 				if (min == -1 || vertexSet[i]->adj[j].weight < min) {
+					min=vertexSet[i]->adj[j].weight;
 					edj = j;
 				}
 			}
 		}
 		if (min != -1) {
+
 			vertexSet[i]->adj[edj].rejected = false;
 			Vertex<T> * de = vertexSet[i]->adj[edj].dest;
+			cout<<"apor o destino : "<<de->info.print()<<endl;
 			for (int c = 0; c < de->adj.size(); c++) {
 				if (de->adj[c].dest->info == vertexSet[i]->info) {
+
 					de->adj[c].rejected = false;
 				}
 			}
@@ -297,6 +313,7 @@ void Graph<T>::applyStableMarriage() {
 	}
 
 //se nao tiverem todos uma ligaçao
+	if(!studentsLinked())
 	this->applyStableMarriage();
 
 }
@@ -307,26 +324,47 @@ void Graph<T>::printGraph() {
 	string main, dest;
 
 	cout << "size " << vertexSet.size();
-	for(int i=0;i<vertexSet.size();i++){
+	for (int i = 0; i < vertexSet.size(); i++) {
 		cout << "\n Info: ";
-		main= vertexSet[i]->info.print();
-		cout << main <<endl;
-		for(int i =0;i<vertexSet[i]->getAdj().size();i++){
-			dest = vertexSet[i]->getAdj()[i].getDest()->info.print();
+		main = vertexSet[i]->info.print();
+		cout << main << endl;
+		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+			dest = vertexSet[i]->adj[j].dest->info.print();
 			cout << "Connected to ";
 			cout << dest;
-			if (vertexSet[i]->getAdj()[i].getProp()==false)
+			if (vertexSet[i]->adj[j].proposed == false)
 				cout << " with Proposed=false";
-			else cout << " with Proposed=true";
+			else
+				cout << " with Proposed=true";
 
-			if (vertexSet[i]->getAdj()[i].getRej()==false)
+			if (vertexSet[i]->adj[j].rejected == false)
 				cout << " with Rejected=false\n";
-			else cout << " with Rejected=true\n";
+			else
+				cout << " with Rejected=true\n";
 
 		}
 
-
 	}
+}
+template<class T>
+bool Graph<T>::studentsLinked() {
+	bool n;
+	int errm=0;
+	for (int i = 0; i < studentsN; i++) {
+		n=false;
+		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+
+			if (vertexSet[i]->adj[j].proposed && !vertexSet[i]->adj[j].rejected) {
+				n=true;
+				errm++;
+			}
+
+		}
+		if (n == false) {
+			return false;
+		}
+	}
+	return true;
 }
 
 #endif /* GRAPH_H_ */

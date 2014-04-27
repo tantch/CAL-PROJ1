@@ -112,6 +112,7 @@ int main() {
 	tempOrder->push_back(4);
 	tempOrder->push_back(5);
 	tempPrio->push_back(3);
+	tempPrio->push_back(2);
 	tempPrio->push_back(1);
 	Students* e4 = new Students(4, "E4", *tempOrder, *tempPrio);
 
@@ -213,11 +214,12 @@ int main() {
 
 	stableGraph->printGraph();
 
-	cout<<"aplciar sabelmarriage";
+	cout<<"aplciar sabelmarriage\n";
 	//@TODO Print the graph to check data input
 
-	//stableGraph->applyStableMarriage();
-
+	stableGraph->applyStableMarriage();
+	cout<<"et1\n";
+	stableGraph->printGraph();
 
 	//@TODO apply Hung Alg
 	/**
