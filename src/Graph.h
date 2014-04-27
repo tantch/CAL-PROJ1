@@ -119,10 +119,10 @@ public:
 	void applyStableMarriage();
 	void setStudentsN(int n);
 	void setProjectsN(int n);
+	void printGraph();
 	void setSupervisorsN(int n);
 	//Exercicio 5
 	Vertex<T>* getVertex(const T &v) const;
-	void printGraph();
 
 };
 
@@ -130,11 +130,15 @@ template<class T>
 bool Graph<T>::addVertex(const T &in) {
 	typename vector<Vertex<T>*>::iterator it = vertexSet.begin();
 	typename vector<Vertex<T>*>::iterator ite = vertexSet.end();
-	for (; it != ite; it++)
-		if ((*it)->info == in)
+	for (; it != ite; it++) {
+		if ((*it)->info == in) {
+
 			return false;
+		}
+	}
 	Vertex<T> *v1 = new Vertex<T>(in);
 	vertexSet.push_back(v1);
+
 	return true;
 }
 
@@ -239,7 +243,7 @@ Vertex<T>* Graph<T>::getVertex(const T &v) const {
 
 template<class T>
 void Graph<T>::applyStableMarriage() {
-
+	cout<<"qetal\n";
 	//percorrer estudantes
 	for (int i = 0; i < studentsN; i++) {
 		int min = -1;
@@ -251,7 +255,7 @@ void Graph<T>::applyStableMarriage() {
 			}
 
 		}
-		//colocar as ligaçoes selecioanas nos 2 sentidso
+//colocar as ligaçoes selecioanas nos 2 sentidso
 		if (min != -1) {
 			vertexSet[i]->adj[edj].proposed = true;
 			vertexSet[i]->adj[edj].rejected = true;
@@ -288,24 +292,24 @@ void Graph<T>::applyStableMarriage() {
 		}
 	}
 
-
 //se nao tiverem todos uma ligaçao
-	applyStableMarriage();
+	this->applyStableMarriage();
 
 }
 
 template<class T>
-void Graph<T>::printGraph(){
+void Graph<T>::printGraph() {
 
-	typename vector<Vertex<T>* >::iterator it=vertexSet.begin();
 
-	while(it!=vertexSet.end()){
+	cout << "size " << vertexSet.size();
+	for(int i=0;i<vertexSet.size();i++){
 		cout << "\n Info: ";
-		cout << (*it)->getInfo().print();
-		it++;
+		string str= vertexSet[i]->info.print();
+		cout << str<<endl;
+
+
 
 	}
 }
-
 
 #endif /* GRAPH_H_ */

@@ -24,18 +24,20 @@ void setGraph() {
 	stableGraph->setStudentsN(students.size());
 	stableGraph->setSupervisorsN(supervisors.size());
 
-	for (int i = 0; i++; i < students.size()) {
+
+	for (int i = 0; i < students.size(); i++) {
 		stableGraph->addVertex(*students[i]);
 
 	}
-	for (int i = 0; i++; i < projects.size()) {
+
+	for (int i = 0; i < projects.size();i++) {
 		stableGraph->addVertex(*projects[i]);
 	}
-	for (int i = 0; i++; i < supervisors.size()) {
+	for (int i = 0; i < supervisors.size(); i++) {
 		stableGraph->addVertex(*supervisors[i]);
 	}
 
-	for (int i = 0; i++; i < students.size()) {
+	for (int i = 0; i < students.size(); i++) {
 		vector<int> temp1 = students[i]->getPrefOrder();
 		vector<int> temp2 = students[i]->getPrefPrio();
 		//vector<Vertex<People> *> temp3 = stableGraph->getVertexSet();
@@ -45,7 +47,7 @@ void setGraph() {
 			//stableGraph->addEdge(temp3[i],temp3[i+students.size()],temp2[j]-1);
 		}
 	}
-	for (int i = 0; i++; i < projects.size()) {
+	for (int i = 0; i < projects.size(); i++) {
 		vector<int> temp1 = projects[i]->getPrefOrder();
 		vector<int> temp2 = projects[i]->getPrefPrio();
 
@@ -54,7 +56,7 @@ void setGraph() {
 					temp2[j] - 1);
 		}
 	}
-	for (int i = 0; i++; i < supervisors.size()) {
+	for (int i = 0; i < supervisors.size(); i++) {
 		vector<int> temp1 = supervisors[i]->getPrefOrder();
 		vector<int> temp2 = supervisors[i]->getPrefPrio();
 

@@ -30,3 +30,7 @@ bool People::operator==(const People & p) {
 	else
 		return false;
 }
+string People::print(){
+
+	return name;
+}
