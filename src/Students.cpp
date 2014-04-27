@@ -13,7 +13,7 @@ Students::Students(int id, string name, vector<int> prefOrder,
 	this->name = name;
 	this->prefOrder = prefOrder;
 	this->prefPrio = prefPrio;
-
+	this->numMax=1;
 }
 
 Students::~Students() {

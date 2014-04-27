@@ -134,6 +134,7 @@ public:
 	void printGraph();
 	void setSupervisorsN(int n);
 	bool studentsLinked();
+	void applyHungAlg();
 	//Exercicio 5
 	Vertex<T>* getVertex(const T &v) const;
 
@@ -264,7 +265,7 @@ void Graph<T>::applyStableMarriage() {
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
 			if ((min == -1 || vertexSet[i]->adj[j].weight < min)
 					&& !vertexSet[i]->adj[j].rejected) {
-				min=vertexSet[i]->adj[j].weight;
+				min = vertexSet[i]->adj[j].weight;
 				edj = j;
 			}
 
@@ -282,18 +283,18 @@ void Graph<T>::applyStableMarriage() {
 		}
 	}
 
-
-	for (int i = studentsN; i < studentsN+projectsN; i++) {
+	for (int i = studentsN; i < studentsN + projectsN; i++) {
 		int min = -1;
 		int edj;
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
-			cout<<"testing conection of edge to: "<<vertexSet[i]->adj[j].dest->info.print()<<endl;
+			cout << "testing conection of edge to: "
+					<< vertexSet[i]->adj[j].dest->info.print() << endl;
 			if (vertexSet[i]->adj[j].proposed
 					&& !vertexSet[i]->adj[j].rejected) {
 				vertexSet[i]->adj[j].rejected = true;
 
 				if (min == -1 || vertexSet[i]->adj[j].weight < min) {
-					min=vertexSet[i]->adj[j].weight;
+					min = vertexSet[i]->adj[j].weight;
 					edj = j;
 				}
 			}
@@ -302,7 +303,7 @@ void Graph<T>::applyStableMarriage() {
 
 			vertexSet[i]->adj[edj].rejected = false;
 			Vertex<T> * de = vertexSet[i]->adj[edj].dest;
-			cout<<"apor o destino : "<<de->info.print()<<endl;
+			cout << "apor o destino : " << de->info.print() << endl;
 			for (int c = 0; c < de->adj.size(); c++) {
 				if (de->adj[c].dest->info == vertexSet[i]->info) {
 
@@ -313,8 +314,8 @@ void Graph<T>::applyStableMarriage() {
 	}
 
 //se nao tiverem todos uma ligaçao
-	if(!studentsLinked())
-	this->applyStableMarriage();
+	if (!studentsLinked())
+		this->applyStableMarriage();
 
 }
 
@@ -349,13 +350,14 @@ void Graph<T>::printGraph() {
 template<class T>
 bool Graph<T>::studentsLinked() {
 	bool n;
-	int errm=0;
+	int errm = 0;
 	for (int i = 0; i < studentsN; i++) {
-		n=false;
+		n = false;
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
 
-			if (vertexSet[i]->adj[j].proposed && !vertexSet[i]->adj[j].rejected) {
-				n=true;
+			if (vertexSet[i]->adj[j].proposed
+					&& !vertexSet[i]->adj[j].rejected) {
+				n = true;
 				errm++;
 			}
 
@@ -365,6 +367,324 @@ bool Graph<T>::studentsLinked() {
 		}
 	}
 	return true;
+}
+
+template<class T>
+void Graph<T>::applyHungAlg() {
+	//getting total supervisors iterations
+	int sptN = 0;
+	for (int i = studentsN + projectsN; i < vertexSet.size(); i++) {
+		sptN += vertexSet[i]->info.getNumMax();
+	}
+	cout << "Total of supervisors it: " << sptN << " \n";
+	//getting number of projects with students
+	int prN = 0;
+	for (int i = studentsN; i < studentsN + projectsN; i++) {
+
+		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+			if (vertexSet[i]->adj[j].proposed
+					&& !vertexSet[i]->adj[j].rejected) {
+				prN++;
+			}
+		}
+
+	}
+	cout << "Total of projects picked: " << prN << " \n";
+
+	int matrixSize = 0;
+
+	if (sptN >= prN) {
+		matrixSize = sptN + 1;
+	} else
+		matrixSize = prN + 1;
+
+	cout << "Matrix size: " << matrixSize << endl;
+
+	int matrix[matrixSize][matrixSize];
+	//colocar ids de projectos e sueprvisores
+
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixSize; j++) {
+			matrix[i][j] = -1;
+		}
+	}
+
+	int r = 1;
+	for (int i = studentsN + projectsN; i < vertexSet.size(); i++) {
+		for (int j = 0; j < vertexSet[i]->info.getNumMax(); j++) {
+			matrix[0][r] = vertexSet[i]->info.getId();
+			r++;
+
+		}
+
+	}
+	r = 1;
+	for (int i = studentsN; i < studentsN + projectsN; i++) {
+		bool con = false;
+
+		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+			if (vertexSet[i]->adj[j].proposed
+					&& !vertexSet[i]->adj[j].rejected) {
+				con = true;
+
+			}
+		}
+		if (con) {
+			matrix[r][0] = vertexSet[i]->info.getId();
+			r++;
+		}
+	}
+
+	for (int i = 1; i < matrixSize; i++) {
+		int proT = matrix[i][0];
+
+		for (int j = 1; j < matrixSize; j++) {
+			int supT = matrix[0][j];
+
+			for (int c = 0; c < vertexSet[supT - 1]->adj.size(); c++) {
+
+				if (vertexSet[supT - 1]->adj[c].dest->info.getId() == proT) {
+					matrix[i][j] = vertexSet[supT - 1]->adj[c].weight;
+				}
+			}
+
+		}
+	}
+
+	int max = -1;
+	for (int i = 1; i < matrixSize; i++) {
+		for (int j = 1; j < matrixSize; j++) {
+			if (matrix[i][j] > max) {
+				max = matrix[i][j];
+			}
+		}
+	}
+	cout << "o maximo é: " << max << endl;
+
+	for (int i = 1; i < matrixSize; i++) {
+		for (int j = 1; j < matrixSize; j++) {
+			if (matrix[i][j] == -1) {
+				matrix[i][j] = max;
+			}
+		}
+	}
+
+	//print
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixSize; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+	//reduzir colunas
+
+	for (int i = 1; i < matrixSize; i++) {
+		int minc = -1;
+
+		for (int j = 1; j < matrixSize; j++) {
+			if (minc == -1 || matrix[j][i] < minc) {
+				minc = matrix[j][i];
+			}
+		}
+		for (int j = 1; j < matrixSize; j++) {
+			matrix[j][i] -= minc;
+		}
+
+	}
+	//print
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixSize; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+	//reduzir filas
+
+	for (int i = 1; i < matrixSize; i++) {
+		int minc = -1;
+
+		for (int j = 1; j < matrixSize; j++) {
+			if (minc == -1 || matrix[i][j] < minc) {
+				minc = matrix[i][j];
+			}
+		}
+		for (int j = 1; j < matrixSize; j++) {
+			matrix[i][j] -= minc;
+		}
+
+	}
+	//print
+	for (int i = 0; i < matrixSize; i++) {
+		for (int j = 0; j < matrixSize; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	bool rejectedj[matrixSize];
+	for (int i = 0; i < matrixSize; i++)
+		rejectedj[i] = false;
+	bool rejectedi[matrixSize];
+	for (int i = 0; i < matrixSize; i++)
+		rejectedi[i] = false;
+	bool tickedj[matrixSize];
+	bool tickedi[matrixSize];
+	int atributed = 0;
+
+	bool assigned = false;
+	bool multipelchoices = false;
+	bool finished = false;
+	bool ticked = false;
+	while (!finished) {
+
+		while (!assigned) {
+			cout << "  itere  " << endl;
+			for (int i = 1; i < matrixSize; i++) {
+				cout << "  itere  " << endl;
+
+				int znum = 0;
+				for (int j = 1; j < matrixSize; j++) {
+					if (matrix[i][j] == 0 && !rejectedj[j] && !rejectedi[i]) {
+						znum++;
+					}
+				}
+				if (znum == 1) {
+					for (int j = 1; j < matrixSize; j++) {
+						if (matrix[i][j] == 0 && !rejectedj[j]
+								&& !rejectedi[i]) {
+							matrix[i][j] = -2;
+							rejectedj[j] = true;
+							rejectedi[i] = true;
+							atributed++;
+						}
+					}
+				}
+				if (znum > 1 && multipelchoices) {
+					for (int j = 1; j < matrixSize; j++) {
+						if (matrix[i][j] == 0 && !rejectedj[j] && !rejectedi[i]
+								&& multipelchoices) {
+							matrix[i][j] = -2;
+							rejectedj[j] = true;
+							rejectedi[i] = true;
+							atributed++;
+							multipelchoices = false;
+						}
+					}
+
+				}
+
+			}
+			for (int i = 1; i < matrixSize; i++) {
+
+				int znum = 0;
+				for (int j = 1; j < matrixSize; j++) {
+					if (matrix[j][i] == 0 && !rejectedi[j] && !rejectedj[i]) {
+						znum++;
+					}
+				}
+				if (znum == 1) {
+					for (int j = 1; j < matrixSize; j++) {
+						if (matrix[j][i] == 0 && !rejectedi[j]
+								&& !rejectedj[i]) {
+							matrix[j][i] = -2;
+							rejectedi[j] = true;
+							rejectedj[i] = true;
+							atributed++;
+						}
+					}
+				}
+				if (znum > 1 && multipelchoices) {
+					for (int j = 1; j < matrixSize; j++) {
+						if (matrix[j][i] == 0 && !rejectedi[j] && !rejectedj[i]
+								&& multipelchoices) {
+							matrix[j][i] = -2;
+							rejectedi[j] = true;
+							rejectedj[i] = true;
+							atributed++;
+							multipelchoices = false;
+						}
+					}
+
+				}
+
+			}
+
+			assigned = true;
+			for (int i = 1; i < matrixSize; i++) {
+				for (int j = 1; j < matrixSize; j++) {
+					if (matrix[i][j] == 0 && !rejectedj[j] && !rejectedi[i]) {
+
+						assigned = false;
+
+					}
+				}
+			}
+			if (atributed == matrixSize - 1) {
+				assigned = true;
+			}
+
+			multipelchoices = false;
+			for (int i = 1; i < matrixSize; i++) {
+				int znum = 0;
+				for (int j = 1; j < matrixSize; j++) {
+					if (matrix[i][j] == 0 && rejectedj[j] != -1
+							&& rejectedi[i] != -1) {
+
+						znum++;
+
+					}
+				}
+				if (znum > 1) {
+					multipelchoices = true;
+				}
+			}
+			if (!multipelchoices) {
+				for (int j = 1; j < matrixSize; j++) {
+					int znum = 0;
+					for (int i = 1; i < matrixSize; i++) {
+						if (matrix[i][j] == 0 && rejectedj[j] != -1
+								&& rejectedi[i] != -1) {
+
+							znum++;
+
+						}
+					}
+					if (znum > 1) {
+						multipelchoices = true;
+					}
+				}
+			}
+			//print
+			for (int i = 0; i < matrixSize; i++) {
+				for (int j = 0; j < matrixSize; j++) {
+					cout << matrix[i][j] << "|";
+				}
+				cout << endl;
+			}
+		}
+
+		cout << "assginment numbers: " << atributed << "\n";
+
+		if (atributed == matrixSize - 1) {
+			cout << "hungarian done\n";
+			finished = true;
+			ticked = true;
+		}
+
+		while (!ticked) {
+
+		}
+
+	}
+
+//cover zeros with minimum lines
+
+//add the minimum uncoverd element to every covered
+
+//subtract it
+//repeat if no with minimum
+//select final
+
 }
 
 #endif /* GRAPH_H_ */

@@ -16,6 +16,7 @@ protected:
 	int id;
 	vector<int> prefOrder;
 	vector<int> prefPrio;
+	int numMax;
 public:
 	People();
 	People(int id,string name,vector<int> prefOrder,vector<int> prefPrio);
@@ -31,6 +32,9 @@ public:
 	}
 	vector<int> getPrefPrio(){
 		return prefPrio;
+	}
+	int getNumMax(){
+		return numMax;
 	}
 
 	string print();

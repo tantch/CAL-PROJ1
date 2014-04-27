@@ -13,11 +13,13 @@ People::People(int id, string name, vector<int> prefOrder,
 	this->name = name;
 	this->prefOrder = prefOrder;
 	this->prefPrio = prefPrio;
+	this->numMax=1;
 
 }
 People::People() {
 	this->id = 0;
 	this->name = ",";
+	this->numMax=1;
 }
 
 People::~People() {

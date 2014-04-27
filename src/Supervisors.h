@@ -14,7 +14,7 @@
 namespace std {
 
 class Supervisors: public People {
-	int numMax;
+
 
 
 public:

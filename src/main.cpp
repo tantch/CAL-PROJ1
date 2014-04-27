@@ -12,12 +12,146 @@
 #include "Graph.h"
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 vector<Students *> students;
 vector<ProjResp *> projects;
 vector<Supervisors *> supervisors;
 Graph<People>* stableGraph;
+int idN=0;
+void loadStudents(){
 
+	ifstream file;
+		file.open("estudantes.txt");
+		{
+			string name;
+			vector<int> Ord;
+			vector<int> Prio;
+			char comma;
+			int e;
+			bool cont=true;
+
+			while (file.good()) {
+				Ord.clear();
+				Prio.clear();
+
+				getline(file,name);
+
+				while(cont){
+					file >> e;
+					Ord.push_back(e);
+					file >> comma;
+					if (comma==';')
+						cont=false;
+
+				}
+
+				cont=true;
+
+				while(cont){
+					file >> e;
+					Prio.push_back(e);
+					file >> comma;
+					if (comma==';')
+						cont=false;
+
+				}
+
+				if (!file.eof()){
+					Students* s = new Students(idN++,name,Ord,Prio);
+					students.push_back(s);
+				}
+
+			}
+		}
+		file.close();
+}
+
+void loadProjResp(){
+
+	ifstream file;
+			file.open("proj_resp.txt");
+			{
+				string name;
+				string nproj;
+				vector<int> Ord;
+				vector<int> Prio;
+				char comma;
+				bool cont=true;
+				int e;
+
+				while (file.good()) {
+					Ord.clear();
+					Prio.clear();
+
+					getline(file,name);
+					getline(file,nproj);
+					while(cont){
+						file >> e;
+						Ord.push_back(e);
+						file >> comma;
+						if (comma==';') cont=false;
+					}
+					cont=true;
+					while(cont){
+						file >> e;
+						Prio.push_back(e);
+						file >> comma;
+						if (comma==';') cont=false;;
+					}
+
+					if (!file.eof()){
+						ProjResp* s = new ProjResp(idN++,name,nproj,Ord,Prio);
+						projects.push_back(s);
+					}
+
+				}
+			}
+			file.close();
+}
+
+void loadSupervisors(){
+
+	ifstream file;
+			file.open("estudantes.txt");
+			{
+				string name;
+				int nmax;
+				vector<int> Ord;
+				vector<int> Prio;
+				char comma;
+				bool cont=true;
+				int e;
+
+				while (file.good()) {
+					Ord.clear();
+					Prio.clear();
+					getline(file,name);
+					file >> nmax;
+					while(cont){
+						file >> e;
+						Ord.push_back(e);
+						file >> comma;
+						if (comma==';') cont=false;
+					}
+					cont=true;
+					while(cont){
+						file >> e;
+						Prio.push_back(e);
+						file >> comma;
+						if (comma==';') cont=false;
+					}
+
+					if (!file.eof()){
+						Supervisors* s = new Supervisors(idN++,name,nmax,Ord,Prio);
+						supervisors.push_back(s);
+					}
+
+				}
+			}
+			file.close();
+
+}
 void setGraph() {
 	stableGraph = new Graph<People>();
 	stableGraph->setProjectsN(projects.size());
@@ -167,7 +301,7 @@ int main() {
 	tempOrder->push_back(1);
 	tempOrder->push_back(3);
 	tempOrder->push_back(4);
-	tempPrio->push_back(1);
+	tempPrio->push_back(4);
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
 	Supervisors* s1 = new Supervisors(10, "S1", 2, *tempOrder, *tempPrio);
@@ -187,7 +321,7 @@ int main() {
 	tempOrder->push_back(3);
 	tempOrder->push_back(4);
 	tempOrder->push_back(5);
-	tempPrio->push_back(3);
+	tempPrio->push_back(4);
 	tempPrio->push_back(2);
 	tempPrio->push_back(1);
 	Supervisors* s3 = new Supervisors(12, "S3", 2, *tempOrder, *tempPrio);
@@ -221,7 +355,9 @@ int main() {
 	cout<<"et1\n";
 	stableGraph->printGraph();
 
-	//@TODO apply Hung Alg
+	stableGraph->applyHungAlg();
+	cout<<"left Hunh \n";
+
 	/**
 	 * @TODO print final graph
 	 */

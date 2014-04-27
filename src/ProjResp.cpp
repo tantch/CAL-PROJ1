@@ -14,6 +14,7 @@ ProjResp::ProjResp(int id, string name, string projName, vector<int> prefOrder,
 	this->projName = projName;
 	this->prefOrder = prefOrder;
 	this->prefPrio = prefPrio;
+	this->numMax=1;
 }
 
 ProjResp::~ProjResp() {
