@@ -313,7 +313,7 @@ int main() {
 	tempOrder->push_back(5);
 	tempPrio->push_back(2);
 	tempPrio->push_back(3);
-	tempPrio->push_back(1);
+	tempPrio->push_back(2);
 	Supervisors* s2 = new Supervisors(11, "S2", 1, *tempOrder, *tempPrio);
 
 	tempPrio->clear();
@@ -323,7 +323,7 @@ int main() {
 	tempOrder->push_back(5);
 	tempPrio->push_back(4);
 	tempPrio->push_back(2);
-	tempPrio->push_back(1);
+	tempPrio->push_back(3);
 	Supervisors* s3 = new Supervisors(12, "S3", 2, *tempOrder, *tempPrio);
 
 //add to vectos

@@ -528,7 +528,12 @@ void Graph<T>::applyHungAlg() {
 	for (int i = 0; i < matrixSize; i++)
 		rejectedi[i] = false;
 	bool tickedj[matrixSize];
+	for (int i = 0; i < matrixSize; i++)
+		tickedj[i] = false;
 	bool tickedi[matrixSize];
+	for (int i = 0; i < matrixSize; i++)
+		tickedi[i] = false;
+	bool accepted[matrixSize][matrixSize];
 	int atributed = 0;
 
 	bool assigned = false;
@@ -536,11 +541,32 @@ void Graph<T>::applyHungAlg() {
 	bool finished = false;
 	bool ticked = false;
 	while (!finished) {
+		cout << "iteracion\n";
+		assigned = false;
+		ticked = false;
+		multipelchoices = false;
+		atributed = 0;
+
+		for (int i = 0; i < matrixSize; i++)
+			rejectedj[i] = false;
+
+		for (int i = 0; i < matrixSize; i++)
+			rejectedi[i] = false;
+
+		for (int i = 0; i < matrixSize; i++)
+			tickedj[i] = false;
+
+		for (int i = 0; i < matrixSize; i++)
+			tickedi[i] = false;
+		for (int i = 0; i < matrixSize; i++) {
+			for (int j = 0; j < matrixSize; j++) {
+				accepted[i][j] = false;
+			}
+		}
 
 		while (!assigned) {
 			cout << "  itere  " << endl;
 			for (int i = 1; i < matrixSize; i++) {
-				cout << "  itere  " << endl;
 
 				int znum = 0;
 				for (int j = 1; j < matrixSize; j++) {
@@ -552,7 +578,7 @@ void Graph<T>::applyHungAlg() {
 					for (int j = 1; j < matrixSize; j++) {
 						if (matrix[i][j] == 0 && !rejectedj[j]
 								&& !rejectedi[i]) {
-							matrix[i][j] = -2;
+							accepted[i][j] = true;
 							rejectedj[j] = true;
 							rejectedi[i] = true;
 							atributed++;
@@ -563,7 +589,7 @@ void Graph<T>::applyHungAlg() {
 					for (int j = 1; j < matrixSize; j++) {
 						if (matrix[i][j] == 0 && !rejectedj[j] && !rejectedi[i]
 								&& multipelchoices) {
-							matrix[i][j] = -2;
+							accepted[i][j] = true;
 							rejectedj[j] = true;
 							rejectedi[i] = true;
 							atributed++;
@@ -586,7 +612,7 @@ void Graph<T>::applyHungAlg() {
 					for (int j = 1; j < matrixSize; j++) {
 						if (matrix[j][i] == 0 && !rejectedi[j]
 								&& !rejectedj[i]) {
-							matrix[j][i] = -2;
+							accepted[j][i] = true;
 							rejectedi[j] = true;
 							rejectedj[i] = true;
 							atributed++;
@@ -597,7 +623,7 @@ void Graph<T>::applyHungAlg() {
 					for (int j = 1; j < matrixSize; j++) {
 						if (matrix[j][i] == 0 && !rejectedi[j] && !rejectedj[i]
 								&& multipelchoices) {
-							matrix[j][i] = -2;
+							accepted[j][i] = true;
 							rejectedi[j] = true;
 							rejectedj[i] = true;
 							atributed++;
@@ -664,26 +690,137 @@ void Graph<T>::applyHungAlg() {
 		}
 
 		cout << "assginment numbers: " << atributed << "\n";
+		for (int i = 0; i < matrixSize; i++) {
+			for (int j = 0; j < matrixSize; j++) {
+				cout << accepted[i][j] << "|";
+			}
+			cout << endl;
+
+		}
+		cout << endl;
 
 		if (atributed == matrixSize - 1) {
 			cout << "hungarian done\n";
 			finished = true;
 			ticked = true;
 		}
+		if (!ticked) {
 
-		while (!ticked) {
+			for (int i = 1; i < matrixSize; i++) {
+				if (!rejectedi[i]) {
+					tickedi[i] = true;
 
+				}
+			}
+			for (int i = 1; i < matrixSize; i++) {
+				cout << tickedi[i] << "|";
+			}
+			cout << "\n";
+			for (int i = 1; i < matrixSize; i++) {
+				cout << tickedj[i] << "|";
+			}
+			cout << "\n";
+			cout << "\n";
+
+			while (!ticked) {
+				cout << "starting tick process\n";
+				ticked = true;
+				for (int i = 0; i < matrixSize; i++) {
+					if (tickedi[i]) {
+
+						for (int j = 0; j < matrixSize; j++) {
+							if (matrix[i][j] == 0 && !tickedj[j]) {
+								ticked = false;
+								tickedj[j] = true;
+
+							}
+
+						}
+
+					}
+				}
+				for (int j = 0; j < matrixSize; j++) {
+					if (tickedj[j]) {
+
+						for (int i = 0; i < matrixSize; i++) {
+							if (!tickedi[i] && accepted[i][j]) {
+								ticked = false;
+								tickedi[i] = true;
+
+							}
+
+						}
+
+					}
+				}
+				for (int i = 1; i < matrixSize; i++) {
+					cout << tickedi[i] << "|";
+				}
+				cout << "\n";
+				for (int i = 1; i < matrixSize; i++) {
+					cout << tickedj[i] << "|";
+				}
+				cout << "\n";
+				cout << "\n";
+			}
 		}
 
+		for (int i = 0; i < matrixSize; i++) {
+			if (tickedi[i]) {
+				tickedi[i] = false;
+			} else
+				tickedi[i] = true;
+		}
+
+		for (int i = 1; i < matrixSize; i++) {
+			cout << tickedi[i] << "|";
+		}
+		cout << "\n";
+		for (int i = 1; i < matrixSize; i++) {
+			cout << tickedj[i] << "|";
+		}
+		cout << "\n";
+		cout << "\n";
+		cout << "all ticked\n";
+		int minT = -1;
+
+		for (int i = 1; i < matrixSize; i++) {
+			for (int j = 1; j < matrixSize; j++) {
+				if ((matrix[i][j] < minT || minT == -1) && !tickedi[i]
+						&& !tickedj[j]) {
+					minT = matrix[i][j];
+				}
+
+			}
+		}
+		for (int i = 1; i < matrixSize; i++) {
+			for (int j = 1; j < matrixSize; j++) {
+				if (!tickedi[i] && !tickedj[j]) {
+					matrix[i][j] -= minT;
+				}
+				if (tickedi[i] && tickedj[j]) {
+					matrix[i][j] += minT;
+				}
+
+			}
+		}
+
+		cout << "minT = " << minT << endl;
+		//print
+		for (int i = 0; i < matrixSize; i++) {
+			for (int j = 0; j < matrixSize; j++) {
+				cout << matrix[i][j] << "|";
+			}
+			cout << endl;
+		}
+
+		cout << "subtractiosn and additions compelted\n";
+
+
+
+
+
 	}
-
-//cover zeros with minimum lines
-
-//add the minimum uncoverd element to every covered
-
-//subtract it
-//repeat if no with minimum
-//select final
 
 }
 
