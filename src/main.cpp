@@ -238,15 +238,13 @@ int main() {
 	loadSupervisors();
 
 	setGraph();
-
+	cout << "inicial : \n";
 	stableGraph->printGraph();
 
 	stableGraph->applyStableMarriage();
 
-	stableGraph->printGraph();
-
 	stableGraph->applyHungAlg();
-
+	cout << "final: \n";
 	stableGraph->printGraph();
 
 	return 0;

@@ -339,9 +339,15 @@ void Graph<T>::printGraph() {
 				cout << " with Proposed=true";
 
 			if (vertexSet[i]->adj[j].rejected == false)
-				cout << " with Rejected=false\n";
+				cout << " with Rejected=false";
 			else
-				cout << " with Rejected=true\n";
+				cout << " with Rejected=true";
+
+			if(vertexSet[i]->adj[j].proposed && !vertexSet[i]->adj[j].rejected){
+				cout<<"  final connection \n";
+			}
+			else
+				cout<<"\n";
 
 		}
 
