@@ -363,16 +363,18 @@ void Graph<T>::printGraph() {
 	for (int i = 0; i < studentsN; i++) {
 		gv->addNode(i + 1, 50, 120 + 120 * i);
 		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
+		gv->setVertexColor(i+1,"green");
 
 	}
 	for (int i = studentsN; i < studentsN + projectsN; i++) {
 		gv->addNode(i + 1, 350, 120 + 120 * (i - studentsN));
 		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
-
+		gv->setVertexColor(i+1,"blue");
 	}
 	for (int i = studentsN + projectsN; i < vertexSet.size(); i++) {
 		gv->addNode(i + 1, 650, 120 + 120 * (i - studentsN - projectsN));
 		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
+		gv->setVertexColor(i+1,"red");
 
 	}
 
@@ -387,14 +389,18 @@ void Graph<T>::printGraph() {
 
 			if (vertexSet[i]->adj[j].proposed
 					&& !vertexSet[i]->adj[j].rejected) {
-				gv->setEdgeThickness(incares,4);
-			} else
+				gv->setEdgeThickness(incares,2);
+				gv->setEdgeColor(incares,"blue");
+			} else{
 				gv->setEdgeThickness(incares,1);
+				gv->setEdgeColor(incares,"green");
+			}
 
 			incares++;
 		}
 
 	}
+	gv->rearrange();
 
 }
 template<class T>
