@@ -239,7 +239,7 @@ int main() {
 
 	setGraph();
 	cout << "inicial : \n";
-	stableGraph->printGraph();
+	//stableGraph->printGraph();
 
 	stableGraph->applyStableMarriage();
 

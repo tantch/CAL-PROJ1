@@ -9,6 +9,9 @@
 #include <list>
 #include <limits>
 #include <iostream>
+#include <cstdio>
+#include "graphviewer.h"
+#include <iostream>
 using namespace std;
 
 template<class T> class Edge;
@@ -321,37 +324,78 @@ void Graph<T>::applyStableMarriage() {
 
 template<class T>
 void Graph<T>::printGraph() {
+	int incares = 0;
+	/*
+	 string main, dest;
 
-	string main, dest;
+	 cout << "size " << vertexSet.size();
+	 for (int i = 0; i < vertexSet.size(); i++) {
+	 cout << "\n Info: ";
+	 main = vertexSet[i]->info.print();
+	 cout << main << endl;
+	 for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
+	 dest = vertexSet[i]->adj[j].dest->info.print();
+	 cout << "Connected to ";
+	 cout << dest;
+	 if (vertexSet[i]->adj[j].proposed == false)
+	 cout << " with Proposed=false";
+	 else
+	 cout << " with Proposed=true";
 
-	cout << "size " << vertexSet.size();
+	 if (vertexSet[i]->adj[j].rejected == false)
+	 cout << " with Rejected=false";
+	 else
+	 cout << " with Rejected=true";
+
+	 if(vertexSet[i]->adj[j].proposed && !vertexSet[i]->adj[j].rejected){
+	 cout<<"  final connection \n";
+	 }
+	 else
+	 cout<<"\n";
+
+	 }
+
+	 }*/
+
+	GraphViewer *gv = new GraphViewer(600, 600, false);
+	gv->createWindow(600, 600);
+
+	for (int i = 0; i < studentsN; i++) {
+		gv->addNode(i + 1, 50, 120 + 120 * i);
+		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
+
+	}
+	for (int i = studentsN; i < studentsN + projectsN; i++) {
+		gv->addNode(i + 1, 350, 120 + 120 * (i - studentsN));
+		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
+
+	}
+	for (int i = studentsN + projectsN; i < vertexSet.size(); i++) {
+		gv->addNode(i + 1, 650, 120 + 120 * (i - studentsN - projectsN));
+		gv->setVertexLabel(i+1,vertexSet[i]->info.getName());
+
+	}
+
 	for (int i = 0; i < vertexSet.size(); i++) {
-		cout << "\n Info: ";
-		main = vertexSet[i]->info.print();
-		cout << main << endl;
 		for (int j = 0; j < vertexSet[i]->adj.size(); j++) {
-			dest = vertexSet[i]->adj[j].dest->info.print();
-			cout << "Connected to ";
-			cout << dest;
-			if (vertexSet[i]->adj[j].proposed == false)
-				cout << " with Proposed=false";
-			else
-				cout << " with Proposed=true";
+			int l = vertexSet[i]->adj[j].dest->info.getId();
+			gv->addEdge(incares, i + 1, l, EdgeType::DIRECTED);
 
-			if (vertexSet[i]->adj[j].rejected == false)
-				cout << " with Rejected=false";
-			else
-				cout << " with Rejected=true";
+			double s = vertexSet[i]->adj[j].weight;
 
-			if(vertexSet[i]->adj[j].proposed && !vertexSet[i]->adj[j].rejected){
-				cout<<"  final connection \n";
-			}
-			else
-				cout<<"\n";
+			gv->setEdgeWeight(incares, s+1);
 
+			if (vertexSet[i]->adj[j].proposed
+					&& !vertexSet[i]->adj[j].rejected) {
+				gv->setEdgeThickness(incares,4);
+			} else
+				gv->setEdgeThickness(incares,1);
+
+			incares++;
 		}
 
 	}
+
 }
 template<class T>
 bool Graph<T>::studentsLinked() {
@@ -829,9 +873,10 @@ void Graph<T>::applyHungAlg() {
 
 				if (accepted[i][j]) {
 					int acj = matrix[0][j];
-					for (int c = 0; c < vertexSet[acj-1]->adj.size(); c++) {
-						if (vertexSet[acj-1]->adj[c].dest->info.getId() == aci) {
-							vertexSet[acj-1]->adj[c].proposed = true;
+					for (int c = 0; c < vertexSet[acj - 1]->adj.size(); c++) {
+						if (vertexSet[acj - 1]->adj[c].dest->info.getId()
+								== aci) {
+							vertexSet[acj - 1]->adj[c].proposed = true;
 						}
 					}
 				}

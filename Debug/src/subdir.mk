@@ -8,6 +8,8 @@ CPP_SRCS += \
 ../src/ProjResp.cpp \
 ../src/Students.cpp \
 ../src/Supervisors.cpp \
+../src/connection.cpp \
+../src/graphviewer.cpp \
 ../src/main.cpp 
 
 OBJS += \
@@ -15,6 +17,8 @@ OBJS += \
 ./src/ProjResp.o \
 ./src/Students.o \
 ./src/Supervisors.o \
+./src/connection.o \
+./src/graphviewer.o \
 ./src/main.o 
 
 CPP_DEPS += \
@@ -22,6 +26,8 @@ CPP_DEPS += \
 ./src/ProjResp.d \
 ./src/Students.d \
 ./src/Supervisors.d \
+./src/connection.d \
+./src/graphviewer.d \
 ./src/main.d 
 
 
