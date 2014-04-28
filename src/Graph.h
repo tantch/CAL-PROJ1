@@ -816,9 +816,22 @@ void Graph<T>::applyHungAlg() {
 
 		cout << "subtractiosn and additions compelted\n";
 
+		for (int i = 1; i < matrixSize; i++) {
 
+			int aci = matrix[i][0];
+			for (int j = 1; j < matrixSize; j++) {
 
-
+				if (accepted[i][j]) {
+					int acj = matrix[0][j];
+					for (int c = 0; c < vertexSet[acj-1]->adj.size(); c++) {
+						if (vertexSet[acj-1]->adj[c].dest->info.getId() == aci) {
+							vertexSet[acj-1]->adj[c].proposed = true;
+						}
+					}
+				}
+			}
+		}
+		cout << "graph updated\n";
 
 	}
 
